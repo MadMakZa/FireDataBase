@@ -3,8 +3,10 @@ package com.example.firedatabase;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -22,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         init();
     }
 
-    public void init(){
+    private void init(){
         edName = findViewById(R.id.edName);
         edSecondName = findViewById(R.id.edSecondName);
         edEmail = findViewById(R.id.edEmail);
@@ -38,8 +40,15 @@ public class MainActivity extends AppCompatActivity {
         String email = edEmail.getText().toString();
         //создание нового пользователя с введенными выше параметрами
         User newUser = new User(id,name,secondName,email);
-        //вносим новго пользователя в базу данных
-        mDataBase.push().setValue(newUser);
+        //вносим нового пользователя в базу данных если поля заполнены
+        if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(secondName) && !TextUtils.isEmpty(email)){
+            mDataBase.push().setValue(newUser);
+            Toast.makeText(this,"Сохранено", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this,"Пустое поле", Toast.LENGTH_SHORT).show();
+        }
+
+
     }
     public void onClickRead(View view){
 
