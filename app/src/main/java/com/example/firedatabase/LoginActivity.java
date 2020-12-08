@@ -25,7 +25,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
         init();
-//        onClickSignUp();
     }
 
     @Override
@@ -42,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void init(){
         edLogin = findViewById(R.id.edLogin);
-        edPassword = findViewById(R.id.edPass);
+        edPassword = findViewById(R.id.edPassword);
         mAuth = FirebaseAuth.getInstance();
     }
     //Зарегистрироваться

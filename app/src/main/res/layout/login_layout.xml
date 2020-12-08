@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/edPass"
+        android:id="@+id/edPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -40,9 +40,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:onClick="onClickSignUp"
-        app:layout_constraintEnd_toEndOf="@+id/edPass"
-        app:layout_constraintStart_toStartOf="@+id/edPass"
-        app:layout_constraintTop_toBottomOf="@+id/edPass"
+        app:layout_constraintEnd_toEndOf="@+id/edPassword"
+        app:layout_constraintStart_toStartOf="@+id/edPassword"
+        app:layout_constraintTop_toBottomOf="@+id/edPassword"
         android:text="@string/button_registration"
         tools:text="@string/button_registration" />
 
