@@ -2,6 +2,7 @@ package com.example.firedatabase;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         //создание базы данных
         mDataBase = FirebaseDatabase.getInstance().getReference(USER_KEY);
     }
-    //кнопочки
+    //Запись в базу данных
     public void onClickSave(View view){
         String id = mDataBase.getKey(); //получаем ключ с базы данных
         //записываем введенный текст в переменные
@@ -48,9 +49,10 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this,"Пустое поле", Toast.LENGTH_SHORT).show();
         }
 
-
+    //Чтение с базы данных
     }
     public void onClickRead(View view){
-
+        Intent i = new Intent(MainActivity.this, ReadActivity.class);
+        startActivity(i);
     }
 }

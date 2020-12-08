@@ -1,5 +1,6 @@
 package com.example.firedatabase;
 
+
 public class User {
     public String id, name, sec_name, email;
 
