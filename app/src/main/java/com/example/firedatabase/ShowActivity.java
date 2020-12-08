@@ -17,6 +17,7 @@ public class ShowActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_layout);
         init();
+        getIntentMain();
     }
 
     private void init(){
