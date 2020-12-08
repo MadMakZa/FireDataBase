@@ -1,6 +1,9 @@
 package com.example.firedatabase;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -25,6 +28,7 @@ public class ReadActivity extends AppCompatActivity {
     private ListView listView;
     private ArrayAdapter<String> adapter; //будет принимать listData
     private List<String> listData;
+    private List<User> listTemp;
     private DatabaseReference mDataBase;
     private String USER_KEY = "User";
 
@@ -34,11 +38,13 @@ public class ReadActivity extends AppCompatActivity {
         setContentView(R.layout.read_layout);
         init();
         getDataFromDB();
+        setOnClickItem();
     }
 
     private void init(){
         listView = findViewById(R.id.listView);
         listData = new ArrayList<>();
+        listTemp = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
         listView.setAdapter(adapter);
         mDataBase = FirebaseDatabase.getInstance().getReference(USER_KEY);
@@ -50,10 +56,12 @@ public class ReadActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //достаем чилдов с User
                 if(listData.size() > 0)listData.clear(); //если лист не пустой, очищаем
+                if(listTemp.size() > 0)listTemp.clear();
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
                     User user = ds.getValue(User.class);
                     assert user != null; //проверка юсера на налл
                     listData.add(user.name);
+                    listTemp.add(user);
                 }
                 //сказать адаптеру, что данные изменились
                 adapter.notifyDataSetChanged();
@@ -65,5 +73,20 @@ public class ReadActivity extends AppCompatActivity {
             }
         };
         mDataBase.addValueEventListener(vListener); //слушатель
+    }
+    //При нажатии на запись
+    private void setOnClickItem(){
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                User user = listTemp.get(position);
+                Intent i = new Intent(ReadActivity.this, ShowActivity.class);
+                i.putExtra("user_name", user.name);
+                i.putExtra("user_sec_name", user.sec_name);
+                i.putExtra("user_email", user.email);
+                startActivity(i);
+
+            }
+        });
     }
 }
