@@ -25,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
         init();
+//        onClickSignUp();
     }
 
     @Override
@@ -55,17 +56,33 @@ public class LoginActivity extends AppCompatActivity {
                             //если всё норм, то пользователь регается
                             if(task.isSuccessful()){
                                 Toast.makeText(getApplicationContext(), "User SignUp Successeful", Toast.LENGTH_SHORT).show();
+
                             } else {
                                 Toast.makeText(getApplicationContext(), "User SignUp Failed", Toast.LENGTH_SHORT).show();
                             }
 
                         }
                     });
+        } else {
+            Toast.makeText(getApplicationContext(), "Please enter email and password", Toast.LENGTH_SHORT).show();
         }
 
     }
     //Войти
     public void onClickSignIn(View view){
+        if(!TextUtils.isEmpty(edLogin.getText().toString()) && !TextUtils.isEmpty(edPassword.getText().toString())) {
+            mAuth.signInWithEmailAndPassword(edLogin.getText().toString(), edPassword.getText().toString()).
+                    addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(getApplicationContext(), "User SignIn Successeful", Toast.LENGTH_SHORT).show();
 
+                            } else {
+                                Toast.makeText(getApplicationContext(), "User SignIn Failed", Toast.LENGTH_SHORT).show();
+                            }
+                }
+            });
+        }
     }
 }
