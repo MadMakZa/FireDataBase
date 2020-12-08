@@ -28,9 +28,9 @@ public class ShowActivity extends AppCompatActivity {
     private void getIntentMain(){
         Intent i = getIntent();
         if(i != null){
-            tvName.setText(i.getStringExtra("user_name"));
-            tvSecondName.setText(i.getStringExtra("user_sec_name"));
-            tvEmail.setText(i.getStringExtra("user_email"));
+            tvName.setText(i.getStringExtra(Constants.USER_NAME));
+            tvSecondName.setText(i.getStringExtra(Constants.USER_SEC_NAME));
+            tvEmail.setText(i.getStringExtra(Constants.USER_EMAIL));
         }
     }
 }

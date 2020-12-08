@@ -81,9 +81,9 @@ public class ReadActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 User user = listTemp.get(position);
                 Intent i = new Intent(ReadActivity.this, ShowActivity.class);
-                i.putExtra("user_name", user.name);
-                i.putExtra("user_sec_name", user.sec_name);
-                i.putExtra("user_email", user.email);
+                i.putExtra(Constants.USER_NAME, user.name);
+                i.putExtra(Constants.USER_SEC_NAME, user.sec_name);
+                i.putExtra(Constants.USER_EMAIL, user.email);
                 startActivity(i);
 
             }
