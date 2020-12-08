@@ -2,4 +2,6 @@
     <string name="app_name">FireDataBase</string>
     <string name="button_save">Save</string>
     <string name="button_read">Read</string>
+    <string name="button_enter">Войти</string>
+    <string name="button_registration">Зарегистрироваться</string>
 </resources>
