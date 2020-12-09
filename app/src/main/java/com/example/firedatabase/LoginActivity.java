@@ -23,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText edLogin, edPassword;
     private FirebaseAuth mAuth;
 
-    private Button bStart, bSignUp, bSignIn;
+    private Button bStart, bSignUp, bSignIn, bSignOut;
     private TextView tvUserName;
 
     @Override
@@ -33,34 +33,6 @@ public class LoginActivity extends AppCompatActivity {
         init();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //проверка - зарегистрирован пользователь с таким именем или нет
-        FirebaseUser cUser = mAuth.getCurrentUser();
-        if(cUser != null){
-            bStart.setVisibility(View.VISIBLE);
-            tvUserName.setVisibility(View.VISIBLE);
-            edLogin.setVisibility(View.GONE);
-            edPassword.setVisibility(View.GONE);
-            bSignIn.setVisibility(View.GONE);
-            bSignUp.setVisibility(View.GONE);
-            String userName = "Вы вошли как : " + cUser.getEmail();
-            tvUserName.setText(userName);
-
-            Toast.makeText(this, "User not null", Toast.LENGTH_SHORT).show();
-        } else {
-            bStart.setVisibility(View.GONE);
-            tvUserName.setVisibility(View.GONE);
-            edLogin.setVisibility(View.VISIBLE);
-            edPassword.setVisibility(View.VISIBLE);
-            bSignIn.setVisibility(View.VISIBLE);
-            bSignUp.setVisibility(View.VISIBLE);
-
-            Toast.makeText(this, "User null!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     private void init(){
         edLogin = findViewById(R.id.edLogin);
         edPassword = findViewById(R.id.edPassword);
@@ -68,9 +40,29 @@ public class LoginActivity extends AppCompatActivity {
         bStart = findViewById(R.id.bStart);
         bSignIn = findViewById(R.id.bSignIn);
         bSignUp = findViewById(R.id.bSignUp);
+        bSignOut = findViewById(R.id.bSignOut);
         tvUserName = findViewById(R.id.tvUserEmail);
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //проверка - зарегистрирован пользователь с таким именем или нет
+        FirebaseUser cUser = mAuth.getCurrentUser();
+        if(cUser != null){
+            showSigned();
+            String userName = "Вы вошли как : " + cUser.getEmail();
+            tvUserName.setText(userName);
+
+            Toast.makeText(this, "User not null", Toast.LENGTH_SHORT).show();
+        } else {
+            notSigned();
+
+            Toast.makeText(this, "User null!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     //Зарегистрироваться
     public void onClickSignUp(View view){
         //если поля не пустые то создаем нового юсера
@@ -81,9 +73,11 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             //если всё норм, то пользователь регается
                             if(task.isSuccessful()){
+                                showSigned();
                                 Toast.makeText(getApplicationContext(), "User SignUp Successeful", Toast.LENGTH_SHORT).show();
 
                             } else {
+                                notSigned();
                                 Toast.makeText(getApplicationContext(), "User SignUp Failed", Toast.LENGTH_SHORT).show();
                             }
 
@@ -102,9 +96,11 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
+                                showSigned();
                                 Toast.makeText(getApplicationContext(), "User SignIn Successeful", Toast.LENGTH_SHORT).show();
 
                             } else {
+                                notSigned();
                                 Toast.makeText(getApplicationContext(), "User SignIn Failed", Toast.LENGTH_SHORT).show();
                             }
                 }
@@ -114,5 +110,26 @@ public class LoginActivity extends AppCompatActivity {
     //выйти из аккаунта
     public void onClickSignOut(View view){
         FirebaseAuth.getInstance().signOut();
+        notSigned();
+    }
+    //если пользователь зарегистрирован
+    private void showSigned(){
+        bStart.setVisibility(View.VISIBLE);
+        tvUserName.setVisibility(View.VISIBLE);
+        bSignOut.setVisibility(View.VISIBLE);
+        edLogin.setVisibility(View.GONE);
+        edPassword.setVisibility(View.GONE);
+        bSignIn.setVisibility(View.GONE);
+        bSignUp.setVisibility(View.GONE);
+    }
+    //если полльзователь не зарегестрирован
+    private void notSigned(){
+        bStart.setVisibility(View.GONE);
+        tvUserName.setVisibility(View.GONE);
+        bSignOut.setVisibility(View.GONE);
+        edLogin.setVisibility(View.VISIBLE);
+        edPassword.setVisibility(View.VISIBLE);
+        bSignIn.setVisibility(View.VISIBLE);
+        bSignUp.setVisibility(View.VISIBLE);
     }
 }
