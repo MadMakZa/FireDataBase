@@ -45,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
             edPassword.setVisibility(View.GONE);
             bSignIn.setVisibility(View.GONE);
             bSignUp.setVisibility(View.GONE);
+            String userName = "Вы вошли как : " + cUser.getEmail();
+            tvUserName.setText(userName);
 
             Toast.makeText(this, "User not null", Toast.LENGTH_SHORT).show();
         } else {
@@ -108,5 +110,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+    //выйти из аккаунта
+    public void onClickSignOut(View view){
+        FirebaseAuth.getInstance().signOut();
     }
 }
