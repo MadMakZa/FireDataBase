@@ -3,7 +3,9 @@ package com.example.firedatabase;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +22,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText edLogin, edPassword;
     private FirebaseAuth mAuth;
+
+    private Button bStart;
+    private TextView tvUserName;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +39,14 @@ public class LoginActivity extends AppCompatActivity {
         //проверка - зарегистрирован пользователь с таким именем или нет
         FirebaseUser cUser = mAuth.getCurrentUser();
         if(cUser != null){
+            bStart.setVisibility(View.VISIBLE);
+            tvUserName.setVisibility(View.VISIBLE);
+
             Toast.makeText(this, "User not null", Toast.LENGTH_SHORT).show();
         } else {
+            bStart.setVisibility(View.GONE);
+            tvUserName.setVisibility(View.GONE);
+
             Toast.makeText(this, "User null!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -43,6 +55,9 @@ public class LoginActivity extends AppCompatActivity {
         edLogin = findViewById(R.id.edLogin);
         edPassword = findViewById(R.id.edPassword);
         mAuth = FirebaseAuth.getInstance();
+        bStart = findViewById(R.id.bStart);
+        tvUserName = findViewById(R.id.tvUserEmail);
+
     }
     //Зарегистрироваться
     public void onClickSignUp(View view){
