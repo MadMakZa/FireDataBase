@@ -23,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText edLogin, edPassword;
     private FirebaseAuth mAuth;
 
-    private Button bStart;
+    private Button bStart, bSignUp, bSignIn;
     private TextView tvUserName;
 
     @Override
@@ -41,11 +41,19 @@ public class LoginActivity extends AppCompatActivity {
         if(cUser != null){
             bStart.setVisibility(View.VISIBLE);
             tvUserName.setVisibility(View.VISIBLE);
+            edLogin.setVisibility(View.GONE);
+            edPassword.setVisibility(View.GONE);
+            bSignIn.setVisibility(View.GONE);
+            bSignUp.setVisibility(View.GONE);
 
             Toast.makeText(this, "User not null", Toast.LENGTH_SHORT).show();
         } else {
             bStart.setVisibility(View.GONE);
             tvUserName.setVisibility(View.GONE);
+            edLogin.setVisibility(View.VISIBLE);
+            edPassword.setVisibility(View.VISIBLE);
+            bSignIn.setVisibility(View.VISIBLE);
+            bSignUp.setVisibility(View.VISIBLE);
 
             Toast.makeText(this, "User null!", Toast.LENGTH_SHORT).show();
         }
@@ -56,6 +64,8 @@ public class LoginActivity extends AppCompatActivity {
         edPassword = findViewById(R.id.edPassword);
         mAuth = FirebaseAuth.getInstance();
         bStart = findViewById(R.id.bStart);
+        bSignIn = findViewById(R.id.bSignIn);
+        bSignUp = findViewById(R.id.bSignUp);
         tvUserName = findViewById(R.id.tvUserEmail);
 
     }
