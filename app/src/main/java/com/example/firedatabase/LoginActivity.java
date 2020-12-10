@@ -139,6 +139,15 @@ public class LoginActivity extends AppCompatActivity {
     }
     //проверка верификации
     private void sendEmailVer(){
-
+        mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(getApplicationContext(), "Проверьте вашу почту для подтверждения Email", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "Send Enail failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }
