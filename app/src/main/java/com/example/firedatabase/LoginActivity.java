@@ -119,6 +119,9 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         assert user != null;
         if(user.isEmailVerified()) {
+            String userName = "Вы вошли как : " + user.getEmail();
+            tvUserName.setText(userName);
+
             bStart.setVisibility(View.VISIBLE);
             tvUserName.setVisibility(View.VISIBLE);
             bSignOut.setVisibility(View.VISIBLE);
