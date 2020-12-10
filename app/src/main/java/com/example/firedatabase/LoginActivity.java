@@ -1,5 +1,6 @@
 package com.example.firedatabase;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -41,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         bSignIn = findViewById(R.id.bSignIn);
         bSignUp = findViewById(R.id.bSignUp);
         bSignOut = findViewById(R.id.bSignOut);
-        tvUserName = findViewById(R.id.tvUserEmail);
+        tvUserName = findViewById(R.id.tvUserName);
 
     }
 
@@ -131,5 +132,13 @@ public class LoginActivity extends AppCompatActivity {
         edPassword.setVisibility(View.VISIBLE);
         bSignIn.setVisibility(View.VISIBLE);
         bSignUp.setVisibility(View.VISIBLE);
+    }
+    public void onClickStart(View view){
+        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(i);
+    }
+    //проверка верификации
+    private void sendEmailVer(){
+
     }
 }
