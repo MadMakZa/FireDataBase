@@ -75,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                             //если всё норм, то пользователь регается
                             if(task.isSuccessful()){
                                 showSigned();
+                                sendEmailVer();
                                 Toast.makeText(getApplicationContext(), "User SignUp Successeful", Toast.LENGTH_SHORT).show();
 
                             } else {
@@ -115,13 +116,19 @@ public class LoginActivity extends AppCompatActivity {
     }
     //если пользователь зарегистрирован
     private void showSigned(){
-        bStart.setVisibility(View.VISIBLE);
-        tvUserName.setVisibility(View.VISIBLE);
-        bSignOut.setVisibility(View.VISIBLE);
-        edLogin.setVisibility(View.GONE);
-        edPassword.setVisibility(View.GONE);
-        bSignIn.setVisibility(View.GONE);
-        bSignUp.setVisibility(View.GONE);
+        FirebaseUser user = mAuth.getCurrentUser();
+        assert user != null;
+        if(user.isEmailVerified()) {
+            bStart.setVisibility(View.VISIBLE);
+            tvUserName.setVisibility(View.VISIBLE);
+            bSignOut.setVisibility(View.VISIBLE);
+            edLogin.setVisibility(View.GONE);
+            edPassword.setVisibility(View.GONE);
+            bSignIn.setVisibility(View.GONE);
+            bSignUp.setVisibility(View.GONE);
+        }else{
+            Toast.makeText(getApplicationContext(), "Проверьте вашу почту для подтверждения Email", Toast.LENGTH_SHORT).show();
+        }
     }
     //если полльзователь не зарегестрирован
     private void notSigned(){
@@ -139,7 +146,10 @@ public class LoginActivity extends AppCompatActivity {
     }
     //проверка верификации
     private void sendEmailVer(){
-        mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        assert user != null;
+        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
