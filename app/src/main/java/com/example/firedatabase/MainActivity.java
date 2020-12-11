@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText edName, edSecondName, edEmail;
     private DatabaseReference mDataBase;
     private String USER_KEY = "User";
+    private ImageView imImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         edName = findViewById(R.id.edName);
         edSecondName = findViewById(R.id.edSecondName);
         edEmail = findViewById(R.id.edEmail);
+        imImage = findViewById(R.id.imImage);
         //создание базы данных
         mDataBase = FirebaseDatabase.getInstance().getReference(USER_KEY);
     }
@@ -57,6 +60,11 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(MainActivity.this, ReadActivity.class);
         startActivity(i);
     }
+
+    /**
+     * Методы по управлению загрузкой картинок
+     */
+
     //кнопка выбрать картинку
     public void onClickChooseImage(View view){
         getImage();
@@ -67,8 +75,9 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1 && data != null && data.getData() != null){
             if(resultCode == RESULT_OK){
-                //получаем путь картинки
+                //получаем путь картинки если всё ок
                 Log.d("MyLog", "Image URL : " + data.getData());
+                imImage.setImageURI(data.getData());
             }
 
         }
