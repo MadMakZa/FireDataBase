@@ -1,9 +1,13 @@
 package com.example.firedatabase;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,15 +16,26 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText edName, edSecondName, edEmail;
     private DatabaseReference mDataBase;
+    private StorageReference mStorageRef;
     private String USER_KEY = "User";
     private ImageView imImage;
+    private Uri uploadUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         imImage = findViewById(R.id.imImage);
         //создание базы данных
         mDataBase = FirebaseDatabase.getInstance().getReference(USER_KEY);
+        //хранилище ссылок
+        mStorageRef = FirebaseStorage.getInstance().getReference("ImageDB");
     }
     //Запись в базу данных
     public void onClickSave(View view){
@@ -81,6 +98,28 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+    }
+    private void uploadImage(Uri uri){
+        Bitmap bitmap = ((BitmapDrawable) imImage.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] byteArray = baos.toByteArray();
+        StorageReference mRef = mStorageRef.child(System.currentTimeMillis() + "my_image");
+        //метод загрузки
+        UploadTask up = mRef.putBytes(byteArray);
+        Task<Uri> task = up.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                return mStorageRef.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>(){
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                uploadUri = task.getResult(); //ссылку на картинку сохраняем в переменную
+            }
+        });
+
+
     }
 
     //метод выбора картинки
