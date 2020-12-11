@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.squareup.picasso.Picasso;
+
 public class ShowActivity extends AppCompatActivity {
 
     private TextView tvName, tvSecondName, tvEmail;
@@ -33,6 +35,7 @@ public class ShowActivity extends AppCompatActivity {
     private void getIntentMain(){
         Intent i = getIntent();
         if(i != null){
+            Picasso.get().load(i.getStringExtra(Constants.USER_IMAGE_ID)).into(imBD);
             tvName.setText(i.getStringExtra(Constants.USER_NAME));
             tvSecondName.setText(i.getStringExtra(Constants.USER_SEC_NAME));
             tvEmail.setText(i.getStringExtra(Constants.USER_EMAIL));
