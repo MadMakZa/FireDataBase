@@ -54,22 +54,26 @@ public class MainActivity extends AppCompatActivity {
         //хранилище ссылок
         mStorageRef = FirebaseStorage.getInstance().getReference("ImageDB");
     }
-    //Запись в базу данных
-    public void onClickSave(View view){
+    //Сохранить пользователя с введенными данными
+    private void saveUser(){
         String id = mDataBase.getKey(); //получаем ключ с базы данных
         //записываем введенный текст в переменные
         String name = edName.getText().toString();
         String secondName = edSecondName.getText().toString();
         String email = edEmail.getText().toString();
         //создание нового пользователя с введенными выше параметрами
-        User newUser = new User(id,name,secondName,email);
+        User newUser = new User(id,name,secondName,email, uploadUri.toString());
         //вносим нового пользователя в базу данных если поля заполнены
         if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(secondName) && !TextUtils.isEmpty(email)){
-            mDataBase.push().setValue(newUser);
+            if(id != null) mDataBase.child(id).setValue(newUser);
             Toast.makeText(this,"Сохранено", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this,"Пустое поле", Toast.LENGTH_SHORT).show();
         }
+    }
+    //Запись в базу данных
+    public void onClickSave(View view){
+        uploadImage();
 
     //Чтение с базы данных
     }
@@ -95,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 //получаем путь картинки если всё ок
                 Log.d("MyLog", "Image URL : " + data.getData());
                 imImage.setImageURI(data.getData());
-                uploadImage();
+
             }
 
         }
@@ -118,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
                 uploadUri = task.getResult(); //ссылку на картинку сохраняем в переменную
+                saveUser();
             }
         });
 
