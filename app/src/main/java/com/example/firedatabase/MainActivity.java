@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     }
     //Сохранить пользователя с введенными данными
     private void saveUser(){
-        String id = mDataBase.getKey(); //получаем ключ с базы данных
+        String id = mDataBase.push().getKey(); //получаем ключ с базы данных
         //записываем введенный текст в переменные
         String name = edName.getText().toString();
         String secondName = edSecondName.getText().toString();
