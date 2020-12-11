@@ -95,22 +95,24 @@ public class MainActivity extends AppCompatActivity {
                 //получаем путь картинки если всё ок
                 Log.d("MyLog", "Image URL : " + data.getData());
                 imImage.setImageURI(data.getData());
+                uploadImage();
             }
 
         }
     }
-    private void uploadImage(Uri uri){
+
+    private void uploadImage(){
         Bitmap bitmap = ((BitmapDrawable) imImage.getDrawable()).getBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] byteArray = baos.toByteArray();
-        StorageReference mRef = mStorageRef.child(System.currentTimeMillis() + "my_image");
+        final StorageReference mRef = mStorageRef.child(System.currentTimeMillis() + "my_image");
         //метод загрузки
         UploadTask up = mRef.putBytes(byteArray);
         Task<Uri> task = up.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                return mStorageRef.getDownloadUrl();
+                return mRef.getDownloadUrl();
             }
         }).addOnCompleteListener(new OnCompleteListener<Uri>(){
             @Override
