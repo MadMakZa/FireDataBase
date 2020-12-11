@@ -1,10 +1,12 @@
 package com.example.firedatabase;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -55,4 +57,29 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(MainActivity.this, ReadActivity.class);
         startActivity(i);
     }
+    //кнопка выбрать картинку
+    public void onClickChooseImage(View view){
+        getImage();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1 && data != null && data.getData() != null){
+            if(resultCode == RESULT_OK){
+                //получаем путь картинки
+                Log.d("MyLog", "Image URL : " + data.getData());
+            }
+
+        }
+    }
+
+    //метод выбора картинки
+    private void getImage(){
+        Intent intentChooser = new Intent();
+        intentChooser.setType("image/*");
+        intentChooser.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intentChooser, 1);
+    }
+
 }
